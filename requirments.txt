@@ -1,0 +1,16 @@
+altgraph==0.17
+beautifulsoup4==4.9.3
+bs4==0.0.1
+certifi==2021.5.30
+charset-normalizer==2.0.4
+idna==3.2
+macholib==1.15
+pyinstaller==4.5.1
+pyinstaller-hooks-contrib==2021.3
+PyQt5==5.15.4
+PyQt5-Qt5==5.15.2
+PyQt5-sip==12.9.0
+PyQt5-stubs==5.15.2.0
+requests==2.26.0
+soupsieve==2.2.1
+urllib3==1.26.6
