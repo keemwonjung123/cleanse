@@ -2,81 +2,32 @@ import sys
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
+from worker import LoginWorker, DeleteWorker
 from cleaner import Cleaner
-from text import CLEANSE_INFO, LINE_STYLE, LOGIN_STYLE, PUSH_STYLE, PROGRESSBAR_STYLE, LABEL_STYLE
-
-
-class Login(QThread):
-    def __init__(self, parent):
-        super().__init__(parent)
-        self.parent = parent
-    
-    def run(self):
-        user_id = self.parent.id_text.text()
-        pw = self.parent.pw_text.text()
-        self.parent.cleaner.login(user_id, pw)
-
-
-class Delete(QThread):
-    def __init__(self, parent, post_type):
-        super().__init__(parent)
-        self.parent = parent
-        self.post_type = post_type
-
-    def run(self):
-        res = self.parent.cleaner.delete_posts(self.post_type)
-
-        if res == 'BLOCKED':
-            self.parent.sig_type = 'warning'
-            self.parent.sig = ("Warning", "에러가 발생하였습니다.\n프로그램을 종료한 뒤 다시 실행해주세요.")
-            self.parent.signal.run()
-
-        elif res == 'CAPTCHA':
-            self.parent.sig_type = 'warning'
-            self.parent.sig = ("Warning", "CAPTCHA가 감지되었습니다.\n직접 글/댓글을 하나 삭제하여\nCAPTCHA를 해결한 뒤 다시 실행해주세요.")
-            self.parent.signal.run()
-
-        else:
-            self.parent.sig_type = 'information'
-            self.parent.sig = ("Info", "삭제가 완료되었습니다.")
-            self.parent.signal.run()
-
-
-class Signal(QObject):
-    sig = pyqtSignal()
-
-    def run(self):
-        self.sig.emit()
+from info import CLEANSE_INFO
 
 
 class MyWindow(QMainWindow):
     def __init__(self):
-        super().__init__()
-        self.thread = None
-        self.cleaner = Cleaner(self)
-        
-        self.setWindowIcon(QIcon('D:/cleanse/icon.jpg'))
-        self.setWindowTitle("Cleanse")
-        self.setStyleSheet("background-color: white;")
-        self.setFixedSize(275, 245)
+        super(MyWindow, self).__init__()
+        self.cleaner = Cleaner()
+        self.login_worker = LoginWorker(self)
+        self.delete_worker = DeleteWorker(self)
 
-        self.sig_type = None
-        self.sig = ('', '')
-        self.signal = Signal()
-        self.signal.sig.connect(self.inform)
+        self.setWindowIcon(QIcon(sys.path[0] + "/../img/icon.jpg"))
+        self.setWindowTitle("Cleanse")
+        self.setFixedSize(275, 245)
+        self.setStyleSheet(open("style.qss", "r").read())
 
         self.id_text = QLineEdit(self)
         self.id_text.setGeometry(10, 6, 150, 24)
-        self.id_text.setStyleSheet(LINE_STYLE)
         self.pw_text = QLineEdit(self)
         self.pw_text.setGeometry(10, 35, 150, 24)
-        self.pw_text.setStyleSheet(LINE_STYLE)
         self.pw_text.setEchoMode(QLineEdit.Password)
 
-        login_btn = QPushButton("Login", self)
-        login_btn.setGeometry(165, 5, 100, 55)
-        login_btn.setStyleSheet(LOGIN_STYLE)
-        login_btn.clicked.connect(self.login)
+        self.login_btn = QPushButton("Login", self)
+        self.login_btn.setGeometry(165, 5, 100, 55)
+        self.login_btn.clicked.connect(self.login)
 
         self.posting_chk = QRadioButton('posts', self)
         self.posting_chk.setGeometry(10, 65, 60, 25)
@@ -89,36 +40,30 @@ class MyWindow(QMainWindow):
         self.top_chk.setGeometry(10, 95, 150, 25)
         self.top_chk.stateChanged.connect(self.top)
 
-        delete_btn = QPushButton("Delete", self)
-        delete_btn.setGeometry(165, 65, 100, 25)
-        delete_btn.setStyleSheet(PUSH_STYLE)
-        delete_btn.clicked.connect(self.delete)
+        self.delete_btn = QPushButton("Delete", self)
+        self.delete_btn.setGeometry(165, 65, 100, 25)
+        self.delete_btn.clicked.connect(self.delete)
 
-        stop_btn = QPushButton("Stop", self)
-        stop_btn.setGeometry(165, 95, 100, 25)
-        stop_btn.setStyleSheet(PUSH_STYLE)
-        stop_btn.clicked.connect(self.stop)
+        self.stop_btn = QPushButton("Stop", self)
+        self.stop_btn.setGeometry(165, 95, 100, 25)
+        self.stop_btn.clicked.connect(self.stop)
 
         self.progressbar = QProgressBar(self)
         self.progressbar.setGeometry(10, 125, 255, 110)
-        self.progressbar.setStyleSheet(PROGRESSBAR_STYLE)
         self.progressbar.setValue(0)
         self.progressbar.setAlignment(Qt.AlignCenter)
         self.progressbar.setFormat('')
 
         self.info = QLabel(CLEANSE_INFO, self)
         self.info.setGeometry(10, 125, 255, 110)
-        self.info.setStyleSheet(LABEL_STYLE)
         self.info.setAlignment(Qt.AlignCenter)
+
+        self.set_enabled_by_delete(True)
+        self.stop_btn.setEnabled(False)
 
     def output(self, _str):
         self.info.setText(_str)
 
-    def login(self):
-        self.stop()
-        self.thread = Login(self)
-        self.thread.start()
-    
     def top(self):
         if self.top_chk.isChecked():
             self.window().setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
@@ -126,28 +71,36 @@ class MyWindow(QMainWindow):
             self.window().setWindowFlags(self.windowFlags() & ~Qt.WindowStaysOnTopHint)
         self.show()
 
-    def delete(self):
-        self.stop()
-        if self.posting_chk.isChecked():
-            post_type = 'posting'
-        else:
-            post_type = 'comment'
-        self.thread = Delete(self, post_type)
-        self.thread.start()
+    def login(self):
+        self.login_btn.setEnabled(False)
+        self.login_worker.start()
 
     def stop(self):
-        if self.thread is not None:
-            self.thread.quit()
-            self.thread = None
-            self.progressbar.setValue(0)
-        self.output(CLEANSE_INFO)
-    
-    def inform(self):
-        if self.sig_type == 'warning':
-            QMessageBox.warning(self, self.sig[0], self.sig[1])
+        self.delete_worker.working = False
+        self.delete_worker = DeleteWorker(self)
+
+    def delete(self):
+        self.set_enabled_by_delete(True)
+        self.delete_worker.working = True
+        self.delete_worker.start()
+
+    def inform(self, signal_type, signal):
+        if signal_type == 'warning':
+            QMessageBox.warning(self, signal_type, signal)
             self.stop()
-        elif self.sig_type == 'information':
-            QMessageBox.information(self, self.sig[0], self.sig[1])
+        elif signal_type == 'information':
+            QMessageBox.information(self, signal_type, signal)
+
+    def set_enabled_by_login(self, logged_in):
+        self.id_text.setEnabled(not logged_in)
+        self.pw_text.setEnabled(not logged_in)
+        self.login_btn.setEnabled(not logged_in)
+
+    def set_enabled_by_delete(self, deleting):
+        self.posting_chk.setEnabled(not deleting)
+        self.comment_chk.setEnabled(not deleting)
+        self.delete_btn.setEnabled(not deleting)
+        self.stop_btn.setEnabled(deleting)
 
 
 if __name__ == "__main__":
