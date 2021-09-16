@@ -20,7 +20,6 @@ class CleanseWindow(QMainWindow):
         self.thread_pool = QThreadPool()
         self.delete_worker = DeleteWorker(self.cleaner)
         # window settings
-        self.setWindowIcon(QIcon(sys.path[0] + "/../img/icon.jpg"))
         self.setWindowTitle("Cleanse")
         self.setFixedSize(275, 245)
         self.setStyleSheet(open("style.qss", "r").read())
@@ -28,13 +27,11 @@ class CleanseWindow(QMainWindow):
         self.id_line_edit = QLineEdit(self)
         self.id_line_edit.setGeometry(10, 6, 150, 24)
         self.id_line_edit.setPlaceholderText("User ID")
-        self.id_line_edit.setText("keemwonjungtest")
         # pw line edit
         self.pw_line_edit = QLineEdit(self)
         self.pw_line_edit.setGeometry(10, 35, 150, 24)
         self.pw_line_edit.setEchoMode(QLineEdit.Password)
         self.pw_line_edit.setPlaceholderText("password")
-        self.pw_line_edit.setText("qpwoeiru1!")
         # login button
         self.login_button = QPushButton("Login", self)
         self.login_button.setGeometry(165, 5, 100, 55)
