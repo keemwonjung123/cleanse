@@ -1,3 +1,6 @@
 /venv/
+/build/
+/dist/
 /.DS_Store
 /.idea/
+/cleanse.spec
