@@ -1,8 +1,13 @@
+# cleanse 3.0
+# cleaner.py
+
 import requests
 from bs4 import BeautifulSoup
 
 
+# cleaner
 class Cleaner:
+    # set constraints
     AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) ' \
                  'Chrome/87.0.4280.66 Safari/537.36 '
     LOGIN_HEADERS = {
@@ -28,14 +33,17 @@ class Cleaner:
         'User-Agent': AGENT
     }
 
+    # when instance created
     def __init__(self):
+        # initial settings
         super().__init__()
         self.session = requests.Session()
         self.session.headers.update({'User-Agent': self.AGENT})
-        self.user_id = None
-        self.pw = None
+        self.user_id = ""
+        self.pw = ""
         self.logged_in = False
 
+    # serialize form
     @staticmethod
     def serialize_form(input_elements):
         form = {}
@@ -43,29 +51,30 @@ class Cleaner:
             form[input_element['name']] = input_element['value']
         return form
 
+    # get number of posts
     def get_number_of_posts(self, post_type):
-        gallog = f'https://gallog.dcinside.com/{self.user_id}/{post_type}'
+        url = f'https://gallog.dcinside.com/{self.user_id}/{post_type}'
         self.session.headers.update({'User-Agent': self.AGENT})
-        res = self.session.get(gallog)
+        res = self.session.get(url)
         soup = BeautifulSoup(res.text, 'html.parser')
-        num_posts = soup.select_one('header > div > div.choice_sect > button.on > span').text
-        num_posts = int(num_posts[1:-1])
-        return num_posts
+        number_of_posts = soup.select_one('header > div > div.choice_sect > button.on > span').text
+        number_of_posts = int(number_of_posts[1:-1])
+        return number_of_posts
 
+    # get post number
     def get_post_number(self, post_type):
-        gallog = f'https://gallog.dcinside.com/{self.user_id}/{post_type}?p=1'
+        url = f'https://gallog.dcinside.com/{self.user_id}/{post_type}?p=1'
         self.session.headers.update({'User-Agent': self.AGENT})
-        res = self.session.get(gallog)
+        res = self.session.get(url)
         soup = BeautifulSoup(res.text, 'html.parser')
         if not soup.select_one('body'):
             return 'BLOCKED'
-
         post_list_elements = soup.select('.cont_listbox > li')
         if len(post_list_elements) < 1:
             return None
-
         return post_list_elements[0]['data-no']
 
+    # login
     def login(self, user_id, pw):
         self.user_id = user_id
         self.pw = pw
@@ -82,12 +91,12 @@ class Cleaner:
         soup = BeautifulSoup(res.text, 'html.parser')
         return bool(soup.select('.logout'))
 
+    # delete post
     def delete_post(self, post_no, post_type):
-        gallog = f'https://gallog.dcinside.com/{self.user_id}/{post_type}'
+        url = f'https://gallog.dcinside.com/{self.user_id}/{post_type}'
         self.session.headers.update({'User-Agent': self.AGENT})
-        res = self.session.get(gallog)
+        res = self.session.get(url)
         soup = BeautifulSoup(res.text, 'html.parser')
-
         if not soup.select_one('body'):
             return False
         form_data = {
@@ -104,5 +113,4 @@ class Cleaner:
         data = res.json()
         if res.status_code == 200 and data['result'] == 'success':
             return {}
-
         return data

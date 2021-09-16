@@ -1,3 +1,6 @@
+# cleanse 3.0
+# info.py
+
 CLEANSE_INFO = """
 CLEANSE 3.0
 
