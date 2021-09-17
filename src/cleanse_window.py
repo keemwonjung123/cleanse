@@ -1,10 +1,9 @@
 # cleanse 3.0
 # cleanse_window.py
 
-import sys
+import os
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
 from workers import LoginWorker, DeleteWorker
 from cleaner import Cleaner
 from info import CLEANSE_INFO
@@ -22,7 +21,8 @@ class CleanseWindow(QMainWindow):
         # window settings
         self.setWindowTitle("Cleanse")
         self.setFixedSize(275, 245)
-        self.setStyleSheet(open("style.qss", "r").read())
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        self.setStyleSheet(open(current_dir + "/style.qss", "r").read())
         # id line edit
         self.id_line_edit = QLineEdit(self)
         self.id_line_edit.setGeometry(10, 6, 150, 24)
