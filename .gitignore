@@ -1,6 +1,9 @@
-/venv/
-/build/
 *.DS_Store
 /.idea/
-/cleanse.spec
+/build/
+/cleanse/
+/dist/cleanse.app
+/dist/cleanse
 /src/__pycache__/
+/venv/
+/cleanse.spec
