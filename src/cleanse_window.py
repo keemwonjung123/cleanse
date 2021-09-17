@@ -4,6 +4,7 @@
 import os
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
+from style_sheet import STYLE_SHEET
 from workers import LoginWorker, DeleteWorker
 from cleaner import Cleaner
 from info import CLEANSE_INFO
@@ -21,7 +22,7 @@ class CleanseWindow(QMainWindow):
         # window settings
         self.setWindowTitle("Cleanse")
         self.setFixedSize(275, 245)
-        self.setStyleSheet(open("style.qss", "r").read())
+        self.setStyleSheet(STYLE_SHEET)
         # id line edit
         self.id_line_edit = QLineEdit(self)
         self.id_line_edit.setGeometry(10, 6, 150, 24)
