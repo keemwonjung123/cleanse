@@ -1,6 +1,6 @@
 # Cleanse
 
-<img alt="screenshot" src="https://raw.githubusercontent.com/keemwonjung123/cleanse/master/img/macos.png">
+<img alt="screenshot" src="/img/macos.png" height=400 width=400>
 
 ## Download
 
