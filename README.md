@@ -1,8 +1,10 @@
 # Cleanse
 
-<img alt="screenshot" src="https://raw.githubusercontent.com/keemwonjung123/cleanse/master/img/macos.png">
+<img alt="screenshot" src="/img/macos.png" height=400 width=400>
 
 ## Download
+
+## 오류잇습니다다운 ㄴㄴㄴㄴㄴ
 
 아래 다운로드 링크를 통해 cleanse를 다운받으실 수 있습니다.
 
