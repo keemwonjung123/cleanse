@@ -21,7 +21,7 @@ class CleanseWindow(QMainWindow):
         # window settings
         self.setWindowTitle("Cleanse")
         self.setFixedSize(275, 245)
-        self.setStyleSheet(open("style.qss", "r").read())
+        self.setStyleSheet(open("D:\cleanse\src\style.qss", "r").read())
         # id line edit
         self.id_line_edit = QLineEdit(self)
         self.id_line_edit.setGeometry(10, 6, 150, 24)
