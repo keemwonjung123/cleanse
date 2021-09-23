@@ -1,6 +1,9 @@
 # cleanse 3.0
 # cleaner.py
 
+# https://github.com/dlcjsdltlq/dcinside-cleaner/blob/master/dcinside_cleaner/dcinside_cleaner.py
+# 위 코드를 일부 수정하여 사용하였음
+
 import requests
 from bs4 import BeautifulSoup
 
