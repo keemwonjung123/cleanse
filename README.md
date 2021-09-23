@@ -4,9 +4,8 @@
 
 ## Download
 
-아래 다운로드 링크를 통해 cleanse를 다운받으실 수 있습니다.
-
-웹/앱을 통해 dcinside에 접속할 수 없는 경우 프로그램도 작동하지 않습니다.
+아래 다운로드 링크를 통해 cleanse를 다운받으실 수 있습니다.  
+dcinside에 접속할 수 없는 경우 프로그램도 작동하지 않습니다.
 
 [cleanse 3.0 Download(Windows)](https://github.com/keemwonjung123/cleanse/raw/master/dist/cleanse.exe)
 
@@ -20,14 +19,24 @@
 
 ## Captcha
 
-200여개의 게시물/댓글을 제거한 후 CAPTCHA 경고창이 나타날 수 있습니다.
-
+200여개의 게시물/댓글을 제거한 후 CAPTCHA 경고창이 나타날 수 있습니다.  
 이때 다음과 같은 순서로 문제를 해결해주시면 됩니다.
 
 - https://dcinside.com/ 접속 및 로그인
 - 게시물이나 댓글 하나를 삭제하면 나타나는 reCAPTCHA를 해결
 - 프로그램으로 돌아와 다시 Delete 실행
 
+## License Announcement
+
+```
+dcinside-cleaner
+https://github.com/dlcjsdltlq/dcinside-cleaner
+Copyright 2020-2021, dlcjsdltlq (https://github.com/dlcjsdltlq)
+MIT License
+```
+
+src/cleaner.py 코드에 위 프로젝트의 [dcinside_cleaner.py](https://github.com/dlcjsdltlq/dcinside-cleaner/blob/master/dcinside_cleaner/dcinside_cleaner.py) 코드를 수정하여 사용하였습니다.  
+dlcjsdltlq 님께 감사의 말씀 드립니다.
 
 ## Contact
 
@@ -35,7 +44,6 @@
 - keemwonjung123@gmail.com
 
 프로그램의 버그와 건의사항을 제보해주시면 감사하겠습니다.
-
 
 ## Version Info
 
