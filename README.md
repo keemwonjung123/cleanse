@@ -4,18 +4,7 @@
 
 ## Download
 
-아래 다운로드 링크를 통해 cleanse를 다운받으실 수 있습니다.  
-dcinside에 접속할 수 없는 경우 프로그램도 작동하지 않습니다.
-
-[cleanse 3.0 Download(Windows)](https://github.com/keemwonjung123/cleanse/raw/master/dist/cleanse.exe)
-
-- cleanse.exe은(는) 위험할 수 있으므로 다운로드하지 않습니다. → 계속
-- Microsoft Defender SmartScreen에서 인식할 수 없는 앱의 시작을 차단했습니다. → 추가 정보 → 실행
-
-[cleanse 3.0 Download(MAC OS)](https://github.com/keemwonjung123/cleanse/raw/master/dist/cleanse.dmg)
-
-- 위 cleanse.dmg 내부 readme.txt 파일의 설명을 따라 설치해주시면 됩니다.
-- 프로그램을 실행한 후 화면이 나타날 때까지 시간이 소요될 수 있으니 잠시 기다려주세요.
+2022년 개발을 중단하였으며 정상적으로 동작하지 않습니다.
 
 ## Captcha
 
